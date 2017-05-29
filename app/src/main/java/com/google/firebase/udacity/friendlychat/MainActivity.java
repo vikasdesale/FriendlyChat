@@ -52,15 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
     private String mUsername;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mMeesagesDatabaseReference;
+    private DatabaseReference mMessagesDatabaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mFirebaseDatabase=FirebaseDatabase.getInstance();
-        mMeesagesDatabaseReference=mFirebaseDatabase.getReference().child("messages");
-
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages");
 
         mUsername = ANONYMOUS;
 
@@ -70,18 +69,7 @@ public class MainActivity extends AppCompatActivity {
         mPhotoPickerButton = (ImageButton) findViewById(R.id.photoPickerButton);
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = (Button) findViewById(R.id.sendButton);
-// Send button sends a message and clears the EditText
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: Send messages on click
 
-                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
-                mMessagesDatabaseReference.push().setValue(friendlyMessage);
-                // Clear input box
-                mMessageEditText.setText("");
-            }
-        });
         // Initialize message ListView and its adapter
         List<FriendlyMessage> friendlyMessages = new ArrayList<>();
         mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
@@ -124,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // TODO: Send messages on click
-
+                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
+                mMessagesDatabaseReference.push().setValue(friendlyMessage);
                 // Clear input box
                 mMessageEditText.setText("");
             }
